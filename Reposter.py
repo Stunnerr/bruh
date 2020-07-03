@@ -33,7 +33,7 @@ class RepostMod(loader.Module):
 		session = vk.Session(access_token=token)
 		api = vk.API(session)
 		doc = reply.photo
-		upload = None
+		upload = ""
 		if doc:
 			path = await reply.download_media()
 			url = api.photos.getMessagesUploadServer(v=5.125)['upload_url']
