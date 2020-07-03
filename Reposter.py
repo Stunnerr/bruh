@@ -48,7 +48,7 @@ class RepostMod(loader.Module):
 			cid = reply.fwd_from.channel_id
 			title = None
 			if cid:
-				channel = await message.client.get_entity(PeerChannel(b))
+				channel = await message.client.get_entity(cid)
 				title = 'Video from ' + channel.title
 			data = api.video.save(v=5.125, title=title, is_private=1)
 			files = {'file':(path, open(path, 'rb'))}
