@@ -25,7 +25,7 @@ class RepostMod(loader.Module):
 		if 0 in peers:
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
-		await message.edit("```Подготовка...```")
+		await message.edit("`П``о``д``г``о``т``о``в``к``а``.``.``.`")
 		ctitle = "Текст:"
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id
@@ -40,9 +40,9 @@ class RepostMod(loader.Module):
 		api = vk.API(session)
 		doc = reply.photo
 		upload = ""
-		await message.edit("```Поиск вложений...```")
+		await message.edit("`П``о``и``с``к`` ``в``л``о``ж``е``н``и``й``.``.``.`")
 		if doc:
-			await message.edit("```Загрузка фото...```")
+			await message.edit("`З``а``г``р``у``з``к``а`` ``ф``о``т``о``.``.``.`")
 			path = await reply.download_media()
 			url = api.photos.getMessagesUploadServer(v=5.125)['upload_url']
 			files = {'file':(path, open(path, 'rb'))}
@@ -52,7 +52,7 @@ class RepostMod(loader.Module):
 			upload = f"photo{save[0]['owner_id']}_{save[0]['id']}"
 		doc = reply.video
 		if doc:
-			await message.edit("```Загрузка видео...`")
+			await message.edit("`З``а``г``р``у``з``к``а`` ``в``и``д``е``о``.``.``.`")
 			path = await reply.download_media()
 			title = None
 			if cid:
