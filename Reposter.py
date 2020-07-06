@@ -40,7 +40,7 @@ class RepostMod(loader.Module):
 		api = vk.API(session)
 		doc = reply.photo
 		upload = ""
-		await message.edit("`П``о``и``с``к`` ``в``л``о``ж``е``н``и``й``.``.``.`")
+		await message.edit("`Поиск вложений...`")
 		if doc:
 			await message.edit("`З``а``г``р``у``з``к``а`` ``ф``о``т``о``.``.``.`")
 			path = await reply.download_media()
