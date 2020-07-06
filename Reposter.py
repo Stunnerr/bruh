@@ -26,9 +26,11 @@ class RepostMod(loader.Module):
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
 		await message.edit("'Подготовка...'")
-		cid = reply.fwd_from.channel_id
-		channel = await message.client.get_entity(cid)
-		ctitle=f"Отправлено из {channel.title}:\n" if channel else "Текст:\n"
+		ctitle = "Текст:\n"
+		if reply.fwd_from:
+			cid = reply.fwd_from.channel_id
+			channel = await message.client.get_entity(cid)
+			ctitle=f"Отправлено из {channel.title}:\n" if channel
 		mymsg = args
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		msg = mymsg + post 
