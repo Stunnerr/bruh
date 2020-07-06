@@ -42,7 +42,7 @@ class RepostMod(loader.Module):
 		upload = ""
 		await message.edit("`Поиск вложений...`")
 		if doc:
-			await message.edit("'Загрузка фото...'")
+			await message.edit("`Загрузка фото...`")
 			path = await reply.download_media()
 			url = api.photos.getMessagesUploadServer(v=5.125)['upload_url']
 			files = {'file':(path, open(path, 'rb'))}
