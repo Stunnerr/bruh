@@ -28,8 +28,9 @@ class RepostMod(loader.Module):
 		await message.edit("'Подготовка...'")
 		cid = reply.fwd_from.channel_id
 		channel = await message.client.get_entity(cid)
+		ctitle=f"Отправлено из {channel.title}:\n" if channel else "Текст:\n"
 		mymsg = args
-		post = '\nОтправлено из'+ channel.title+':'+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
+		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		msg = mymsg + post 
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
