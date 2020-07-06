@@ -62,4 +62,4 @@ class RepostMod(loader.Module):
 			if mymsg: 
 				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
 			api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
-		await message.edit("Success")
+		await message.edit("'Готово'")
