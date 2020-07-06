@@ -25,7 +25,7 @@ class RepostMod(loader.Module):
 		if 0 in peers:
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
-		await message.edit("'Подготовка...'")
+		await message.edit("`Подготовка...`")
 		ctitle = "Текст:\n"
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id
@@ -40,7 +40,7 @@ class RepostMod(loader.Module):
 		api = vk.API(session)
 		doc = reply.photo
 		upload = ""
-		await message.edit("'Поиск вложений...'")
+		await message.edit("`Поиск вложений...`")
 		if doc:
 			await message.edit("'Загрузка фото...'")
 			path = await reply.download_media()
@@ -52,7 +52,7 @@ class RepostMod(loader.Module):
 			upload = f"photo{save[0]['owner_id']}_{save[0]['id']}"
 		doc = reply.video
 		if doc:
-			await message.edit("'Загрузка видео...'")
+			await message.edit("`Загрузка видео...`")
 			path = await reply.download_media()
 			title = None
 			if cid:
@@ -61,9 +61,9 @@ class RepostMod(loader.Module):
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(data['upload_url'], files=files)
 			upload += f",video{data['owner_id']}_{data['video_id']}"
-		await message.edit("'Отправка...'")
+		await message.edit("`Отправка...'`")
 		for peer in peers:
 			if mymsg: 
 				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
 			api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
-		await message.edit("'Готово'")
+		await message.edit("`Готово`")
