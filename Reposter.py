@@ -30,7 +30,8 @@ class RepostMod(loader.Module):
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id
 			channel = await message.client.get_entity(cid)
-			ctitle=f"Отправлено из {channel.title}:\n" if channel else ctitle
+			if channel:
+				ctitle=f"Отправлено из {channel.title}:\n" 
 		mymsg = args
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		msg = mymsg + post 
