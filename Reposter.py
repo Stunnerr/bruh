@@ -19,6 +19,7 @@ class RepostMod(loader.Module):
 	async def forwardcmd(self, message):
 		reply = await message.get_reply_message()
 		args = utils.get_args_raw(message.message)
+		debug = 'DEBUG' in args
 		if not reply:
 			return await utils.answer(message, "Ответьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
@@ -31,9 +32,8 @@ class RepostMod(loader.Module):
 			cid = reply.fwd_from.channel_id
 			channel = await message.client.get_entity(cid) if cid else reply.fwd_from.from_name
 			ctitle=f"Отправлено из {channel.title if cid else channel}:"
-		mymsg = args
+		mymsg = args.replace('DEBUG', '')
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
-		msg = mymsg + post 
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
 		api = vk.API(session)
@@ -61,10 +61,13 @@ class RepostMod(loader.Module):
 			r = requests.post(data['upload_url'], files=files)
 			upload += f",video{data['owner_id']}_{data['video_id']}"
 		await message.edit("`Отправка...`",parse_mode='md')
-		for peer in peers:
-			if mymsg: 
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
-			time.sleep(0.2)
-			api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
-			time.sleep(0.2)
+		if debug: 
+			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
+		else: 
+			for peer in peers:
+				if mymsg: 
+					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
+				time.sleep(0.2)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+				time.sleep(0.2)
 		await message.edit("`Готово`", parse_mode='md')
