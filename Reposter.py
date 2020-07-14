@@ -28,6 +28,8 @@ class RepostMod(loader.Module):
 			return
 		await message.edit("`Подготовка...`",parse_mode='md')
 		ctitle = "Текст:"
+		channel = None
+		cid = None
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id
 			channel = await message.client.get_entity(cid) if cid else reply.fwd_from.from_name
@@ -39,6 +41,9 @@ class RepostMod(loader.Module):
 		api = vk.API(session)
 		doc = reply.photo
 		upload = ""
+		if debug: 
+			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
+			return
 		await message.edit("`Поиск вложений...`",parse_mode='md')
 		if doc:
 			await message.edit("`Загрузка фото...`",parse_mode='md')
@@ -53,21 +58,15 @@ class RepostMod(loader.Module):
 		if doc:
 			await message.edit("`Загрузка видео/гиф...`",parse_mode='md')
 			path = await reply.download_media()
-			title = None
-			if cid:
-				title = 'Video from ' + channel.title
-			data = api.video.save(v=5.125, title=title, is_private=1)
+			data = api.video.save(v=5.125, title='Video', is_private=1)
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(data['upload_url'], files=files)
 			upload += f",video{data['owner_id']}_{data['video_id']}"
 		await message.edit("`Отправка...`",parse_mode='md')
-		if debug: 
-			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
-		else: 
-			for peer in peers:
-				if mymsg: 
-					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
-				time.sleep(0.2)
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
-				time.sleep(0.2)
+		for peer in peers:
+			if mymsg: 
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
+			time.sleep(0.2)
+			api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+			time.sleep(0.2)
 		await message.edit("`Готово`", parse_mode='md')
