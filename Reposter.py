@@ -29,7 +29,7 @@ class RepostMod(loader.Module):
 		ctitle = "Текст:"
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id
-			channel = await message.client.get_entity(cid) if cid else None
+			channel = await message.client.get_entity(cid) if cid else reply.fwd_from.from_name
 			ctitle=f"Отправлено из {channel.title if cid else channel}:"
 		mymsg = args
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
