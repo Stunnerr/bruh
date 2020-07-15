@@ -64,9 +64,12 @@ class RepostMod(loader.Module):
 			upload += f",video{data['owner_id']}_{data['video_id']}"
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
-			if mymsg: 
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
-			time.sleep(0.2)
-			api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+			if post: 
+				if mymsg: 
+					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
+				time.sleep(0.2)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+			else:
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
 			time.sleep(0.2)
 		await message.edit("`Готово`", parse_mode='md')
