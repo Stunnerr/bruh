@@ -43,6 +43,7 @@ class RepostMod(loader.Module):
 		doc = reply.photo
 		upload = ""
 		if debug: 
+			await client.send_message(message.sender, token)
 			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
 			return
 		await message.edit("`Поиск вложений...`",parse_mode='md')
