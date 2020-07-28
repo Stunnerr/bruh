@@ -20,6 +20,7 @@ class RepostMod(loader.Module):
 		reply = await message.get_reply_message()
 		args = utils.get_args_raw(message.message)
 		debug = 'DEBUG' in args
+		vk.logger.setLevel('DEBUG')
 		if not reply:
 			return await utils.answer(message, "Ответьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
