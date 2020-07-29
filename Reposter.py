@@ -22,7 +22,7 @@ class RepostMod(loader.Module):
 		debug = 'DEBUG' in args
 		vk.logger.setLevel('DEBUG')
 		if not reply:
-			return await utils.answer(message, "Ответьте на рассылаемое сообщение")
+			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
 		if 0 in peers:
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
