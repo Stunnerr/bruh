@@ -34,8 +34,8 @@ class RepostMod(loader.Module):
 		cid = None
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
-			channel = await message.client.get_entity(cid)
-			ctitle=f"Отправлено из {await tutils.get_display_name(channel)}:"
+			channel = await message.client.get_entity(cid) if cid else None
+			ctitle=f"Отправлено из {await tutils.get_display_name(channel) if channel else reply.fwd_from.from_name}:"
 		mymsg = args.replace('DEBUG', '')
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		token = self.config["API_TOKEN"]
