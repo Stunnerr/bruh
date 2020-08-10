@@ -36,7 +36,7 @@ class RepostMod(loader.Module):
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
 			channel = await message.client.get_entity(cid) if cid else None
-			ctitle=f"Отправлено из {await (channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
+			ctitle=f"Отправлено из {(channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
