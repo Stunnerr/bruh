@@ -21,6 +21,7 @@ class RepostMod(loader.Module):
 		reply = await message.get_reply_message()
 		args = utils.get_args_raw(message.message)
 		debug = 'DEBUG' in args
+		mymsg = args.replace('DEBUG', '')
 		vk.logger.setLevel('DEBUG')
 		if not reply:
 			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
@@ -36,7 +37,6 @@ class RepostMod(loader.Module):
 			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
 			channel = await message.client.get_entity(cid) if cid else None
 			ctitle=f"Отправлено из {await tutils.get_display_name(channel) if channel else reply.fwd_from.from_name}:"
-		mymsg = args.replace('DEBUG', '')
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
