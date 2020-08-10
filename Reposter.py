@@ -1,5 +1,6 @@
 # requires: vk>=2.0.2
 from .. import loader, utils
+from telethon import utils as tutils
 import requests
 import logging
 import datetime
@@ -34,7 +35,7 @@ class RepostMod(loader.Module):
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id
 			channel = await message.client.get_entity(cid) if cid else message.client.get_entity(reply.fwd_from.from_id)
-			ctitle=f"Отправлено из {utils.get_display_name(channel)}:"
+			ctitle=f"Отправлено из {tutils.get_display_name(channel)}:"
 		mymsg = args.replace('DEBUG', '')
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		token = self.config["API_TOKEN"]
