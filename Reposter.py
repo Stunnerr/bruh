@@ -1,7 +1,6 @@
 # requires: vk>=2.0.2
 from .. import loader
-from .. import utils as futils
-from telethon import utils as tutils
+from .. import utils
 import requests
 import logging
 import datetime
@@ -20,15 +19,15 @@ class RepostMod(loader.Module):
 		"PEER_IDS", [0], "Peer IDs")
 	async def forwardcmd(self, message):
 		reply = await message.get_reply_message()
-		args = await futils.get_args_raw(message.message)
+		args = await utils.get_args_raw(message.message)
 		debug = 'DEBUG' in args
 		mymsg = args.replace('DEBUG', '')
 		vk.logger.setLevel('DEBUG')
 		if not reply:
-			return await futils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
+			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
 		if 0 in peers:
-			await futils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
+			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
 		await message.edit("`Подготовка...`",parse_mode='md')
 		ctitle = "Текст:"
@@ -37,7 +36,7 @@ class RepostMod(loader.Module):
 		if reply.fwd_from:
 			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
 			channel = await message.client.get_entity(cid) if cid else None
-			ctitle=f"Отправлено из {await tutils.get_display_name(channel) if channel else reply.fwd_from.from_name}:"
+			ctitle=f"Отправлено из {await channel.title if isinstance(channel, Channel) else (channel.first_name + ' ' + channel.last_name) if channel else reply.fwd_from.from_name}:"
 		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
