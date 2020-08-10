@@ -68,10 +68,10 @@ class RepostMod(loader.Module):
 		for peer in peers:
 			if post: 
 				if mymsg: 
-					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
+					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg, group_id=197642633)
 				time.sleep(0.2)
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload, group_id=197642633)
 			else:
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload, group_id=197642633)
 			time.sleep(0.2)
 		await message.edit("`Готово`", parse_mode='md')
