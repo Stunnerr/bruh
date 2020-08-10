@@ -1,5 +1,6 @@
 # requires: vk>=2.0.2
-from .. import loader, utils
+from .. import loader
+from .. import utils as futils
 from telethon import utils as tutils
 import requests
 import logging
@@ -19,15 +20,15 @@ class RepostMod(loader.Module):
 		"PEER_IDS", [0], "Peer IDs")
 	async def forwardcmd(self, message):
 		reply = await message.get_reply_message()
-		args = await utils.get_args_raw(message.message)
+		args = await futils.get_args_raw(message.message)
 		debug = 'DEBUG' in args
 		mymsg = args.replace('DEBUG', '')
 		vk.logger.setLevel('DEBUG')
 		if not reply:
-			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
+			return await futils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
 		if 0 in peers:
-			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
+			await futils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
 		await message.edit("`Подготовка...`",parse_mode='md')
 		ctitle = "Текст:"
