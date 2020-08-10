@@ -19,7 +19,7 @@ class RepostMod(loader.Module):
 		"PEER_IDS", [0], "Peer IDs")
 	async def forwardcmd(self, message):
 		reply = await message.get_reply_message()
-		args = await utils.get_args_raw(message.message)
+		args = utils.get_args_raw(message.message)
 		debug = 'DEBUG' in args
 		mymsg = args.replace('DEBUG', '')
 		vk.logger.setLevel('DEBUG')
