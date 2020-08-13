@@ -72,7 +72,8 @@ class RepostMod(loader.Module):
 			upl = api.docs.getUploadServer(v=5.125)
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(upl['upload_url'], files=files)
-			data = api.docs.save(v=5.125,file=json.loads(r.text)['file'], type='audio_message',title='audio_message')
+			js = json.loads(r.text)
+			data = api.docs.save(v=5.125,file=js['file'], type='audio_message',title='audio_message')
 			upload += f"doc{data['owner_id']}_{data['id']},"
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
