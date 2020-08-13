@@ -16,7 +16,7 @@ class RepostMod(loader.Module):
 	def __init__(self):
 		self.name = self.strings["name"]
 		self.config = loader.ModuleConfig("API_TOKEN", None, "VK API token",
-		"PEER_IDS", [0], "Peer IDs")
+		"PEER_IDS", [], "Peer IDs")
 	async def forwardcmd(self, message):
 		reply = await message.get_reply_message()
 		args = utils.get_args_raw(message.message)
@@ -26,7 +26,7 @@ class RepostMod(loader.Module):
 		if not reply:
 			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
-		if 0 in peers:
+		if not peers:
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
 		await message.edit("`Подготовка...`",parse_mode='md')
@@ -69,11 +69,11 @@ class RepostMod(loader.Module):
 		if doc:
 			await message.edit("<code>Загрузка аудио...</code>")
 			path = await reply.download_media()
-			upl = api.docs.getUploadServer(v=5.125)
+			upl = api.docs.getMessagesUploadServer(v=5.125, type='audio_message', peer_id=peers[0])
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(upl['upload_url'], files=files)
 			js = json.loads(r.text)
-			data = api.docs.save(v=5.125,file=js['file'], type='audio_message',title='audio_message')
+			data = api.docs.save(v=5.125, file=js['file'], title='audio_message')
 			upload += f"doc{data['owner_id']}_{data['id']},"
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
