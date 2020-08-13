@@ -56,7 +56,7 @@ class RepostMod(loader.Module):
 			r = requests.post(url, files=files)
 			js = json.loads(r.text)
 			save = api.photos.saveMessagesPhoto(v=5.125,server=js['server'], photo=js['photo'], hash=js['hash'])
-			upload = f"photo{save[0]['owner_id']}_{save[0]['id']}"
+			upload = f"photo{save[0]['owner_id']}_{save[0]['id']},"
 		doc = reply.video
 		if doc:
 			await message.edit("`Загрузка видео/гиф...`",parse_mode='md')
@@ -64,7 +64,16 @@ class RepostMod(loader.Module):
 			data = api.video.save(v=5.125, title='Video', is_private=1)
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(data['upload_url'], files=files)
-			upload += f",video{data['owner_id']}_{data['video_id']}"
+			upload += f"video{data['owner_id']}_{data['video_id']},"
+		doc = reply.audio if reply.audio else reply.voice
+		if doc:
+			await message.edit("<code>Загрузка аудио...</code>")
+			path = await reply.download_media()
+			upl = api.docs.getUploadServer(v=5.125)
+			files = {'file':(path, open(path, 'rb'))}
+			r = requests.post(upl['upload_url'], files=files)
+			data = api.docs.save(v=5.125,file=json.loads(r.text)['file'], type='audio_message',title='audio_message')
+			upload += f"doc{data['owner_id']}_{data['id']},"
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
 			if post: 
