@@ -15,20 +15,5 @@ class autovotermod(loader.Module):
     async def handler(message: Message):
         if not message.poll:
             return
-        client: Client = message.client
-        if (await client.get_me()).id not in [542783236, 304493639]:
-            return
+        client = message.client
         await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
-        if (await client.get_me()).id == 542783236:
-            await client.send_message(data["chat_id"], '📊 Ставки на следующий бросок кубика!\n'
-                                      + data["tag"]
-                                      + '\n\n@grinrill, должок!')
-    handlers.append(handler)
-
-    return {'name': 'Autovoter', 'help': 'autovotes', 'usage': {}}
-
-
-def unregister(client: Client):
-    for handler in handlers:
-        client.remove_event_handler(handler)
-    handlers.clear()
