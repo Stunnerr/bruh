@@ -17,6 +17,7 @@ class autovoterMod(loader.Module):
     async def client_ready(self, client, db):
         client.add_event_handler(handler, events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
     async def handler(event):
+        message = event.message
         if not message.poll: 
             return
         client = message.client
