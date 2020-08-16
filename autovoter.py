@@ -11,9 +11,10 @@ class autovotermod(loader.Module):
         'option': b"4"
     }
 
-    @self.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
-    async def handler(message: Message):
-        if not message.poll:
-            return
-        client = message.client
-        await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
+    async def aaaacmd(message):
+            @self.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+            async def handler(message: Message):
+                if not message.poll:
+                    return
+                client = message.client
+                await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
