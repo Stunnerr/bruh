@@ -6,7 +6,7 @@ from telethon.tl.functions.messages import SendVoteRequest
 
 class autovotermod(loader.Module):
     data = {
-        'bot_id': 931448009,
+        'bot_id': 445079418,
         'chat_id': -1001227323951,
         'option': b"4"
     }
