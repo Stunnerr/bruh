@@ -26,6 +26,7 @@ class autovoterMod(loader.Module):
             client = message.client
             await client.send_message(await client.get_me(), 'handler')
             await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
+        client.add_event_handler(handler, events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
     async def aaaacmd(self, message):
         await message.respond(self._client)
    
