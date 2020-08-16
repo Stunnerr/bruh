@@ -20,6 +20,8 @@ class autovoterMod(loader.Module):
         if not message.poll: 
             return
         client = message.client
+        await client.send_message(await client.get_me(), 'aaaa')
         await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
     async def client_ready(self, client, db):
         client.add_event_handler(handler)
+        await client.send_message(await client.get_me(), 'aaaa')
