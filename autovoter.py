@@ -14,6 +14,7 @@ class autovoterMod(loader.Module):
 
     def __init__(self):
         self.name = self.strings["name"]
+        super().__init__()
     @events.register(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
     async def handler(event):
         message = event.message
