@@ -10,10 +10,12 @@ class autovoterMod(loader.Module):
         'chat_id': -1001227323951,
         'option': b"4"
     }
+    strings=["name": "autovoter"]
 
     def __init__(self):
         self.name = self.strings["name"]
-        @self.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+    async def client_ready(self, client, db):
+        @client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
         async def handler(message: Message):
             if not message.poll:
                 return
