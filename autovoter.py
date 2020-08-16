@@ -27,5 +27,6 @@ class autovoterMod(loader.Module):
         await message.respond(self._client)
     async def client_ready(self, client, db):
         self._client = client
-        client.add_event_handler(handler)
         await client.send_message(await client.get_me(), 'client_ready')
+        client.add_event_handler(handler)
+
