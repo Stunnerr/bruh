@@ -22,4 +22,4 @@ class autovoterMod(loader.Module):
         client = message.client
         await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
     async def client_ready(self, client, db):
-        await client.add_event_handler(handler)
+        client.add_event_handler(handler)
