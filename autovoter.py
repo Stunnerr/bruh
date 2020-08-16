@@ -4,7 +4,7 @@ from telethon.tl.custom import Message
 from telethon.tl.functions.messages import SendVoteRequest
 
 @loader.tds
-class autovotermod(loader.Module):
+class autovoterMod(loader.Module):
     data = {
         'bot_id': 445079418,
         'chat_id': -1001227323951,
