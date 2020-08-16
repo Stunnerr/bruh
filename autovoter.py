@@ -11,8 +11,8 @@ class autovotermod(loader.Module):
         'option': b"4"
     }
 
-    async def aaaacmd(message):
-            @message.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+    def __init__(self):
+            @self.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
             async def handler(message: Message):
                 if not message.poll:
                     return
