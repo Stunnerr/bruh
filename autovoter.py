@@ -12,7 +12,7 @@ class autovotermod(loader.Module):
     }
 
     async def aaaacmd(message):
-            @self.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+            @message.client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
             async def handler(message: Message):
                 if not message.poll:
                     return
