@@ -11,7 +11,7 @@ class autovotermod(loader.Module):
         'option': b"4"
     }
 
-    @borg.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+    @tgbot.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
     async def handler(message: Message):
         if not message.poll:
             return
