@@ -14,11 +14,12 @@ class autovoterMod(loader.Module):
 
     def __init__(self):
         self.name = self.strings["name"]
-    async def client_ready(self, client, db):
-        client.add_event_handler(handler, events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+    @events.register(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
     async def handler(event):
         message = event.message
         if not message.poll: 
             return
         client = message.client
         await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
+    async def client_ready(self, client, db):
+        client.add_event_handler(handler)
