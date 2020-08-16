@@ -10,7 +10,7 @@ class autovoterMod(loader.Module):
         'chat_id': -1001227323951,
         'option': b"4"
     }
-    strings=["name": "autovoter"]
+    strings = {"name": "autovoter"}
 
     def __init__(self):
         self.name = self.strings["name"]
