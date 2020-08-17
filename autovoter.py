@@ -15,7 +15,7 @@ class autovoterMod(loader.Module):
             'option', b"4","")
         super().__init__()
     @events.register(events.NewMessage(from_users=self.config['bot_id'], chats=self.config["chat_id"]))
-    async def handler(event):
+    async def handler(self, event):
         message = event.message
         if not message.poll: 
             return
