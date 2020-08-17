@@ -5,11 +5,6 @@ from telethon.tl.functions.messages import SendVoteRequest
 
 @loader.tds
 class autovoterMod(loader.Module):
-    data = {
-        'bot_id': [445079418],
-        'chat_id': [-1001227323951],
-        'option': b"4"
-    }
     strings = {"name": "autovoter"}
 
     def __init__(self):
@@ -29,5 +24,5 @@ class autovoterMod(loader.Module):
                 return
             client = message.client
             await client.send_message(await client.get_me(), 'handler')
-            await client(SendVoteRequest(self.config["chat_id"], message.id, [self.config["option"]]))
+            await client(SendVoteRequest(message.to_id, message.id, [self.config["option"]]))
         client.add_event_handler(handler, events.NewMessage(from_users=self.config['bot_id'], chats=self.config["chat_id"]))
