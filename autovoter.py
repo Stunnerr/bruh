@@ -14,6 +14,12 @@ class autovoterMod(loader.Module):
 
     def __init__(self):
         self.name = self.strings["name"]
+        self.config = loader.ModuleConfig(
+            'bot_id', 445079418, "",
+
+        'chat_id', -1001227323951,"",
+
+        'option', b"4","")
         super().__init__()
     async def client_ready(self, client, db):
         self._client = client
