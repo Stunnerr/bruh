@@ -9,7 +9,7 @@ class autovoterMod(loader.Module):
     def __init__(self):
         self.name = self.strings["name"]
         self.config = loader.ModuleConfig(
-            'bot_id', 445079418, "",
+            'bot_id', 931448009, "",
             'chat_id', -1001227323951,"",
             'option', b"4","")
         super().__init__()
