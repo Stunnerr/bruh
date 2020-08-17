@@ -6,7 +6,10 @@ from telethon.tl.functions.messages import SendVoteRequest
 @loader.tds
 class autovoterMod(loader.Module):
     strings = {"name": "autovoter"}
-
+    config = loader.ModuleConfig(
+        'bot_id', 445079418, "",
+        'chat_id', -1001227323951,"",
+        'option', b"4","")
     def __init__(self):
         self.name = self.strings["name"]
         self.config = loader.ModuleConfig(
