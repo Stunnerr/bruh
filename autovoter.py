@@ -16,23 +16,18 @@ class autovoterMod(loader.Module):
         self.name = self.strings["name"]
         self.config = loader.ModuleConfig(
             'bot_id', 445079418, "",
-
-        'chat_id', -1001227323951,"",
-
-        'option', b"4","")
+            'chat_id', -1001227323951,"",
+            'option', b"4","")
         super().__init__()
     async def client_ready(self, client, db):
         self._client = client
         await client.send_message(await client.get_me(), 'client_ready')
-        @client.on(events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
+        @client.on(events.NewMessage(from_users=[config['bot_id']], chats=[config["chat_id"]]))
         async def handler(event):
             message = event.message
             if not message.poll: 
                 return
             client = message.client
             await client.send_message(await client.get_me(), 'handler')
-            await client(SendVoteRequest(data["chat_id"], message.id, [data["option"]]))
-        client.add_event_handler(handler, events.NewMessage(from_users=[data['bot_id']], chats=[data["chat_id"]]))
-    async def aaaacmd(self, message):
-        await message.respond(self._client)
-   
+            await client(SendVoteRequest(config["chat_id"], message.id, [config["option"]]))
+        client.add_event_handler(handler, events.NewMessage(from_users=[config['bot_id']], chats=[config["chat_id"]]))
