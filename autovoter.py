@@ -17,7 +17,7 @@ class autovoterMod(loader.Module):
         message = event.message
         client = message.client
         if message.buttons: 
-            if "ОТДАТЬ" in message.buttons[0][0].text: 
+            if "ВЗЯТЬ" in message.buttons[0][0].text: 
                 await message.click(0)
         if message.poll: 
             await client(SendVoteRequest(message.to_id, message.id, [self.config["option"]]))
