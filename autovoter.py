@@ -15,10 +15,12 @@ class autovoterMod(loader.Module):
         super().__init__()
     async def handler(self, event):
         message = event.message
-        if not message.poll: 
-            return
         client = message.client
-        await client(SendVoteRequest(message.to_id, message.id, [self.config["option"]]))
+        if message.buttons: 
+            if "собирает" in message.text: 
+                message.click(0)
+        if message.poll: 
+            await client(SendVoteRequest(message.to_id, message.id, [self.config["option"]]))
     
     async def client_ready(self, client, db):
         self.client = client
