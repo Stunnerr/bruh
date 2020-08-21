@@ -17,7 +17,7 @@ class RepostMod(loader.Module):
 		self.name = self.strings["name"]
 		self.config = loader.ModuleConfig("API_TOKEN", None, "VK API token",
 		"PEER_IDS", [], "Peer IDs")
-	def parse_media(api,reply):
+	async def parse_media(api,reply):
 		upload = ""
 		doc = reply.photo
 		await message.edit("`Поиск вложений...`",parse_mode='md')
@@ -79,11 +79,11 @@ class RepostMod(loader.Module):
 			return
 		upload = ""
 		msgs = await client.get_messages(entity=message.to_id,reverse=True,max_id=reply.id+1,min_id=reply.id-11)
-		upload += parse_media(api,reply)
+		upload += await parse_media(api,reply)
 		grouped = reply.grouped_id if reply.grouped_id else 99
 		for msg in msgs:
 			if msg.grouped_id == grouped: 
-				upload+= parse_media(api,msg)
+				upload+= await parse_media(api,msg)
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
 			if post: 
