@@ -94,6 +94,6 @@ class RepostMod(loader.Module):
 				time.sleep(0.5)
 				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
 			else:
-				api.messages.send(v0=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
 			time.sleep(0.5)
 		await message.edit("`Готово`", parse_mode='md')
