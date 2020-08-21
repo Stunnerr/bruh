@@ -48,7 +48,7 @@ class RepostMod(loader.Module):
 			js = json.loads(r.text)
 			data = api.docs.save(v=5.125, file=js['file'], title='audio_message')['audio_message']
 			upload += f"doc{data['owner_id']}_{data['id']},"
-			return upload
+		return upload
 	async def forwardcmd(self, message):
 		reply = await message.get_reply_message()
 		args = utils.get_args_raw(message.message)
