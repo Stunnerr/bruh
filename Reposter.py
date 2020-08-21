@@ -17,36 +17,9 @@ class RepostMod(loader.Module):
 		self.name = self.strings["name"]
 		self.config = loader.ModuleConfig("API_TOKEN", None, "VK API token",
 		"PEER_IDS", [], "Peer IDs")
-	async def forwardcmd(self, message):
-		reply = await message.get_reply_message()
-		args = utils.get_args_raw(message.message)
-		debug = 'DEBUG' in args
-		mymsg = args.replace('DEBUG', '')
-		vk.logger.setLevel('DEBUG')
-		if not reply:
-			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
-		peers = self.config["PEER_IDS"]
-		if not peers:
-			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
-			return
-		await message.edit("`Подготовка...`",parse_mode='md')
-		ctitle = "Текст:"
-		channel = None
-		cid = None
-		if reply.fwd_from:
-			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
-			channel = await message.client.get_entity(cid) if cid else None
-			ctitle=f"Отправлено из {(channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
-		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
-		token = self.config["API_TOKEN"]
-		session = vk.Session(access_token=token)
-		api = vk.API(session)
-		doc = reply.photo
+	def parse_media(api,reply):
 		upload = ""
-		if debug: 
-			await message.client.send_message(message.sender, token)
-			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
-			return
+		doc = reply.photo
 		await message.edit("`Поиск вложений...`",parse_mode='md')
 		if doc:
 			await message.edit("`Загрузка фото...`",parse_mode='md')
@@ -75,6 +48,42 @@ class RepostMod(loader.Module):
 			js = json.loads(r.text)
 			data = api.docs.save(v=5.125, file=js['file'], title='audio_message')['audio_message']
 			upload += f"doc{data['owner_id']}_{data['id']},"
+			return upload
+	async def forwardcmd(self, message):
+		reply = await message.get_reply_message()
+		args = utils.get_args_raw(message.message)
+		debug = 'DEBUG' in args
+		mymsg = args.replace('DEBUG', '')
+		vk.logger.setLevel('DEBUG')
+		if not reply:
+			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
+		peers = self.config["PEER_IDS"]
+		if not peers:
+			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
+			return
+		await message.edit("`Подготовка...`",parse_mode='md')
+		ctitle = "Текст:"
+		channel = None
+		cid = None
+		if reply.fwd_from:
+			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
+			channel = await message.client.get_entity(cid) if cid else None
+			ctitle=f"Отправлено из {(channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
+		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
+		token = self.config["API_TOKEN"]
+		session = vk.Session(access_token=token)
+		api = vk.API(session)
+		if debug: 
+			await message.client.send_message(message.sender, token)
+			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
+			return
+		upload = ""
+		msgs = await client.get_messages(entity=message.to_id,reverse=True,max_id=reply.id+1,min_id=reply.id-11)
+		upload += parse_media(api,reply)
+		grouped = reply.grouped_id if reply.grouped_id else 99
+		for msg in msgs:
+			if grouped == msg.grouped_id
+				upload+= parse_media(api,msg)
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
 			if post: 
