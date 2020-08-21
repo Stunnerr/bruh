@@ -59,4 +59,40 @@ class RepostMod(loader.Module):
 			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
 		if not peers:
-			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писа
+			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
+			return
+		await message.edit("`Подготовка...`",parse_mode='md')
+		ctitle = "Текст:"
+		channel = None
+		cid = None
+		if reply.fwd_from:
+			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
+			channel = await message.client.get_entity(cid) if cid else None
+			ctitle=f"Отправлено из {(channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
+		post = ctitle+'\u2002'.join(('\n' + reply.message).splitlines(True)) if reply.message else ""
+		token = self.config["API_TOKEN"]
+		session = vk.Session(access_token=token)
+		api = vk.API(session)
+		client = message.client
+		if debug: 
+			await message.client.send_message(message.sender, token)
+			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
+			return
+		upload = ""
+		msgs = await client.get_messages(entity=message.to_id,reverse=True,max_id=reply.id+1,min_id=reply.id-11)
+		upload += await parse_media(api,reply)
+		grouped = reply.grouped_id if reply.grouped_id else 99
+		for msg in msgs:
+			if msg.grouped_id == grouped: 
+				upload+= await parse_media(api,msg)
+		await message.edit("`Отправка...`",parse_mode='md')
+		for peer in peers:
+			if post: 
+				if mymsg: 
+					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
+				time.sleep(0.2)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+			else:
+				api.messages.send(v0=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
+			time.sleep(0.2)
+		await message.edit("`Готово`", parse_mode='md')
