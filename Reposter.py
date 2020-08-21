@@ -19,9 +19,7 @@ class RepostMod(loader.Module):
 		"PEER_IDS", [], "Peer IDs")
 	async def parse_media(self, api,reply, message):
 		upload = ""
-		
 		doc = reply.photo
-		await message.edit("`Поиск вложений...`",parse_mode='md')
 		if doc:
 			await message.edit("`Загрузка фото...`",parse_mode='md')
 			path = await reply.download_media()
