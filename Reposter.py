@@ -82,7 +82,7 @@ class RepostMod(loader.Module):
 		upload += parse_media(api,reply)
 		grouped = reply.grouped_id if reply.grouped_id else 99
 		for msg in msgs:
-			if grouped == msg.grouped_id
+			if msg.grouped_id == grouped
 				upload+= parse_media(api,msg)
 		await message.edit("`Отправка...`",parse_mode='md')
 		for peer in peers:
