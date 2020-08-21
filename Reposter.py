@@ -17,7 +17,7 @@ class RepostMod(loader.Module):
 		self.name = self.strings["name"]
 		self.config = loader.ModuleConfig("API_TOKEN", None, "VK API token",
 		"PEER_IDS", [], "Peer IDs")
-	async def parse_media(api,reply):
+	async def parse_media(self, api,reply):
 		upload = ""
 		doc = reply.photo
 		await message.edit("`Поиск вложений...`",parse_mode='md')
