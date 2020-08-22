@@ -81,7 +81,7 @@ class RepostMod(loader.Module):
 			await message.edit(f"channel: {channel}\ncid: {cid}",parse_mode='md')
 			return
 		upload = ""
-		msgs = await client.get_messages(entity=message.to_id,reverse=False,max_id=reply.id,min_id=reply.id-11)
+		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id,min_id=reply.id-11)
 		grouped = reply.grouped_id if reply.grouped_id else 99
 		for msg in msgs:
 			if msg.grouped_id == grouped: 
