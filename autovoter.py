@@ -17,7 +17,7 @@ class autovoterMod(loader.Module):
         message = event.message
         client = message.client
         if message.buttons: 
-            if 'ЗАБРАТЬ' in message.buttons[0][0].text: 
+            if b'give' in message.buttons[0][0].data: 
                 if (await client.get_me()).id == message.entities[0].user_id:
                     await message.click(0)
         if message.poll: 
