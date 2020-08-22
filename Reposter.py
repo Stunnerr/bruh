@@ -101,4 +101,4 @@ class RepostMod(loader.Module):
 			else:
 				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
 			await asyncio.sleep(0.5)
-		await message.edit(f"Отправлено: {pcount} фото,\n {vcount} видео/гиф,\n {acount} аудио/голосовых.", parse_mode='md')
+		await message.edit(f"Отправлено: {self.pcount} фото,\n {self.vcount} видео/гиф,\n {self.acount} аудио/голосовых.", parse_mode='md')
