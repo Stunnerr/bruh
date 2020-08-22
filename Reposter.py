@@ -56,19 +56,17 @@ class RepostMod(loader.Module):
 		self.vcount = 0
 		self.acount = 0
 		client = message.client
-		client.parse_mode = 'md'
 		reply = await message.get_reply_message()
 		args = utils.get_args_raw(message.message)
 		debug = 'DEBUG' in args
 		mymsg = args.replace('DEBUG', '')
 		vk.logger.setLevel('DEBUG')
 		if not reply:
-			return await utils.answer(message, "<code>R e p o s t e r</code>\nОтветьте на рассылаемое сообщение")
+			return await utils.answer(message, "Ответь на рассылаемое сообщение")
 		peers = self.config["PEER_IDS"]
 		if not peers:
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
-		await message.edit("`Подготовка...`")
 		ctitle = "Текст:"
 		channel = None
 		cid = None
@@ -82,8 +80,9 @@ class RepostMod(loader.Module):
 		api = vk.API(session)
 		if debug: 
 			await message.client.send_message(message.sender, token)
-			await message.edit(f"channel: `{channel}`\ncid: `{cid}`")
+			await message.edit(f"channel: `{channel}`\ncid: `{cid}`",parse_mode='md')
 			return
+		await message.edit("<code>Поиск и загрузка вложений...</code>")
 		upload = ""
 		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id,min_id=reply.id-11)
 		grouped = reply.grouped_id if reply.grouped_id else 99
@@ -91,7 +90,7 @@ class RepostMod(loader.Module):
 			if msg.grouped_id == grouped: 
 				upload += await self.parse_media(api,msg, message)
 		upload += await self.parse_media(api,reply, message)
-		await message.edit("`Отправка...`")
+		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
 			if post: 
 				if mymsg: 
