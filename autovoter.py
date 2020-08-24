@@ -11,8 +11,21 @@ class autovoterMod(loader.Module):
         self.config = loader.ModuleConfig(
             'bot_id', 931448009, "",
             'chat_id', -1001227323951,"",
-            'option', b"4","")
+            'option', b"4",""
+            'enabled', 1, "")
         super().__init__()
+    async def avtogglecmd(self,message):
+        client = message.client
+        enabled = self.config['enabled']
+        if enabled == 1:
+            client.remove_event_handler(self.handler)
+            enabled = 0
+            await message.edit('Disabled')
+        else:
+            client.add_event_handler(self.handler, events.NewMessage(from_users=self.config['bot_id'], chats=self.config["chat_id"]))
+            enabled = 1
+            await message.edit('Enabled')
+        self.config['enabled'] = enabled
     async def handler(self, event):
         message = event.message
         client = message.client
@@ -25,4 +38,8 @@ class autovoterMod(loader.Module):
     
     async def client_ready(self, client, db):
         self.client = client
-        client.add_event_handler(self.handler, events.NewMessage(from_users=self.config['bot_id'], chats=self.config["chat_id"]))
+        enabled = self.config['enabled']
+        if enabled == 1:
+            client.remove_event_handler(self.handler)
+        else:
+            client.add_event_handler(self.handler, events.NewMessage(from_users=self.config['bot_id'], chats=self.config["chat_id"]))
