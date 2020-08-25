@@ -39,7 +39,7 @@ class autovoterMod(loader.Module):
     async def client_ready(self, client, db):
         self.client = client
         enabled = self.config['enabled']
-        if enabled == '1':
+        if enabled != '1':
             client.remove_event_handler(self.handler)
         else:
             client.add_event_handler(self.handler, events.NewMessage(from_users=self.config['bot_id'], chats=self.config["chat_id"]))
