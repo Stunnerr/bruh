@@ -11,7 +11,7 @@ class autovoterMod(loader.Module):
         self.config = loader.ModuleConfig(
             'bot_id', 931448009, "",
             'chat_id', -1001227323951,"",
-            'option', b"4",""
+            'option', b"4","",
             'enabled', '1', "")
         super().__init__()
     async def avtogglecmd(self,message):
