@@ -12,7 +12,8 @@ class autovoterMod(loader.Module):
             'bot_id', 931448009, "",
             'chat_id', -1001227323951,"",
             'option', b"4","",
-            'enabled', '1', "")
+            'enabled', '1', "",
+            'onwin', 'a', "")
         super().__init__()
     async def avtogglecmd(self,message):
         client = message.client
@@ -29,6 +30,8 @@ class autovoterMod(loader.Module):
     async def handler(self, event):
         message = event.message
         client = message.client
+        if message.dice and message.dice.value == int(self.config['option']):
+            await message.respond(self.config['onwin'])
         if message.buttons: 
             if b'give' in message.buttons[0][0].data: 
                 if (await client.get_me()).id == message.entities[0].user_id:
