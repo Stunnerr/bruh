@@ -44,7 +44,7 @@ class RepostMod(loader.Module):
 			self.acount+=1
 			#await message.edit("<code>Загрузка аудио {self.count}...</code>")
 			path = await reply.download_media()
-			upl = api.docs.getMessagesUploadServer(v=5.125, type='audio_message', peer_id=peers[0])
+			upl = api.docs.getMessagesUploadServer(v=5.125, type='audio_message', peer_id=self.config["PEER_IDS"][0])
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(upl['upload_url'], files=files)
 			js = json.loads(r.text)
