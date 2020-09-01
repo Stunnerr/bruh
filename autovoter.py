@@ -13,7 +13,7 @@ class autovoterMod(loader.Module):
             'chat_id', -1001227323951,"",
             'option', b"4","",
             'enabled', '1', "",
-            'onwin', 'a', "")
+            'onwin', '', "")
         super().__init__()
     async def avtogglecmd(self,message):
         client = message.client
