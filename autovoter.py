@@ -28,6 +28,8 @@ class autovoterMod(loader.Module):
             await message.edit('Enabled')
         self.config['enabled'] = enabled
     async def handler(self, event):
+        if not self.config['enabled']:
+            return
         message = event.message
         client = message.client
         if message.dice and message.dice.value == int(self.config['option']):
