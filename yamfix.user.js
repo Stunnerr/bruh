@@ -4,7 +4,7 @@
 // @description Удалялка ракет и прочего говна с прогрессбара яндекс музыки
 // @match *://music.yandex.ru/*
 // @grant none
-// @updateUrl 
+// @updateUrl https://github.com/Stunnerr/bruh/raw/master/yamfix.user.js
 // ==/UserScript==
 
 var fixed = false;
