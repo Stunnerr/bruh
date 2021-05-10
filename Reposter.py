@@ -71,7 +71,7 @@ class RepostMod(loader.Module):
 		channel = None
 		cid = None
 		if reply.fwd_from:
-			cid = reply.fwd_from.channel_id if reply.fwd_from.channel_id else reply.fwd_from.from_id
+			cid = reply.fwd_from.from_id
 			channel = await message.client.get_entity(cid) if cid else None
 			ctitle=f"Переслано от {(channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
 		post = ctitle+'\n' + reply.message if reply.message else ""
@@ -84,12 +84,12 @@ class RepostMod(loader.Module):
 			return
 		await message.edit("<code>Поиск и загрузка вложений...</code>")
 		upload = ""
-		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id,min_id=reply.id-11)
-		grouped = reply.grouped_id if reply.grouped_id else 99
+		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id+10,min_id=reply.id-11)
+		grouped = reply.grouped_id if reply.grouped_id else -1
 		for msg in msgs:
 			if msg.grouped_id == grouped: 
 				upload += await self.parse_media(api,msg, message)
-		upload += await self.parse_media(api,reply, message)
+		upload += await self.parse_media(api, reply, message)
 		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
 			if post: 
