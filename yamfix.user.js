@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Yandex.Music progressbar fix
 // @namespace Stunner
-// @description Удалялка ракет и прочего говна с прогрессбара яндекс музыки
+// @description Удалялка ракет и прочего мусора с прогрессбара яндекс музыки
 // @match *://music.yandex.ru/*
 // @grant none
 // @updateUrl https://github.com/Stunnerr/bruh/raw/master/yamfix.user.js
