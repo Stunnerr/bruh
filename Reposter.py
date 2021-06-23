@@ -67,37 +67,36 @@ class RepostMod(loader.Module):
 		if not peers:
 			await utils.answer(message, "Вы не указали или указали неверно, кому хотите писать в конфиге")
 			return
-		ctitle = "Текст:"
-		channel = None
-		cid = None
+		ptitle = "Текст:"
 		if reply.fwd_from:
-			cid = reply.fwd_from.from_id
-			channel = await message.client.get_entity(cid) if cid else None
-			ctitle=f"Переслано от {(channel.first_name + ' ' + channel.last_name) if isinstance(channel, type(await message.client.get_me())) else channel.title if channel else reply.fwd_from.from_name}:"
-		post = ctitle+'\n' + reply.message if reply.message else ""
+			user = reply.forward.sender
+			channel = reply.forward.chat
+			name = f"{user.first_name} {user.last_name}" if user else channel.title
+			ptitle=f"Переслано от {name}:"
+		post = ptitle + '\n' + reply.message if reply.message else ""
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
 		api = vk.API(session)
 		if debug: 
 			await message.client.send_message(message.sender, token)
-			await message.edit(f"channel: `{channel}`\ncid: `{cid}`",parse_mode='md')
+			await message.edit(f"user: `{user}`\nchannel: `{channel}`\nptitle: `{ptitle}`",parse_mode='md')
 			return
 		await message.edit("<code>Поиск и загрузка вложений...</code>")
 		upload = ""
-		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id+10,min_id=reply.id-11)
+		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id + 10, min_id=reply.id - 11)
 		grouped = reply.grouped_id if reply.grouped_id else -1
 		for msg in msgs:
 			if msg.grouped_id == grouped: 
-				upload += await self.parse_media(api,msg, message)
+				upload += await self.parse_media(api, msg, message)
 		upload += await self.parse_media(api, reply, message)
 		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
 			if post: 
 				if mymsg: 
-					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg)
+					api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999), message=mymsg)
 				await asyncio.sleep(0.5)
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=post,attachment=upload)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999), message=post, attachment=upload)
 			else:
-				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999),message=mymsg,attachment=upload)
+				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999), message=mymsg, attachment=upload)
 			await asyncio.sleep(0.5)
 		await message.edit(f"Отправлено:\n {self.pcount} фото,\n {self.vcount} видео/гиф,\n {self.acount} аудио/голосовых.", parse_mode='md')
