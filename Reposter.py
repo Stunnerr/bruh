@@ -1,24 +1,28 @@
 # requires: vk>=2.0.2
-from .. import loader
-from .. import utils
-import requests
-import logging
+from .. import loader, utils
 import datetime
-import time
+import requests
 import asyncio
-import vk
-import json
+import logging
 import random
+import json
+import time
+import vk
+import os
 
 @loader.tds
 class RepostMod(loader.Module):
 	strings = {"name": "Reposter"}
+	
 	def __init__(self):
 		self.name = self.strings["name"]
 		self.config = loader.ModuleConfig("API_TOKEN", None, "VK API token",
 		"PEER_IDS", [], "Peer IDs")
+	
+	
 	async def parse_media(self, api,reply, message):
 		upload = ""
+		pathes = []
 		doc = reply.photo
 		if doc:
 			self.pcount+=1
@@ -30,6 +34,7 @@ class RepostMod(loader.Module):
 			js = json.loads(r.text)
 			save = api.photos.saveMessagesPhoto(v=5.125,server=js['server'], photo=js['photo'], hash=js['hash'])
 			upload = f"photo{save[0]['owner_id']}_{save[0]['id']},"
+			pathes.append(path)
 		doc = reply.video
 		if doc:
 			self.vcount+=1
@@ -38,7 +43,8 @@ class RepostMod(loader.Module):
 			data = api.video.save(v=5.125, title='Video', is_private=1)
 			files = {'file':(path, open(path, 'rb'))}
 			r = requests.post(data['upload_url'], files=files)
-			upload += f"video{data['owner_id']}_{data['video_id']},"
+			upload += f"video{data['owner_id']}_{data['video_id']}," 
+			pathes.append(path)
 		doc = reply.audio if reply.audio else reply.voice
 		if doc:
 			self.acount+=1
@@ -50,7 +56,10 @@ class RepostMod(loader.Module):
 			js = json.loads(r.text)
 			data = api.docs.save(v=5.125, file=js['file'], title='audio_message')['audio_message']
 			upload += f"doc{data['owner_id']}_{data['id']},"
-		return upload
+			pathes.append(path)
+		return (upload, pathes)
+	
+	
 	async def forwardcmd(self, message):
 		self.pcount = 0
 		self.vcount = 0
@@ -86,8 +95,11 @@ class RepostMod(loader.Module):
 		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id + 10, min_id=reply.id - 11)
 		grouped = reply.grouped_id if reply.grouped_id else -1
 		for msg in msgs:
-			if msg.grouped_id == grouped: 
-				upload += await self.parse_media(api, msg, message)
+			if msg.grouped_id == grouped:
+				ans = await self.parse_media(api, msg, message)
+				upload += ans[0]
+				for x in ans[1]:
+					files.append(x)
 		upload += await self.parse_media(api, reply, message)
 		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
@@ -99,4 +111,6 @@ class RepostMod(loader.Module):
 			else:
 				api.messages.send(v=5.125,peer_id=peer, random_id=random.randint(1, 999999999), message=mymsg, attachment=upload)
 			await asyncio.sleep(0.5)
+		for file in files:
+			os.remove(file)
 		await message.edit(f"Отправлено:\n {self.pcount} фото,\n {self.vcount} видео/гиф,\n {self.acount} аудио/голосовых.", parse_mode='md')
