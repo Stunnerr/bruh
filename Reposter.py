@@ -82,6 +82,11 @@ class RepostMod(loader.Module):
 			channel = reply.forward.chat
 			name = f"{user.first_name} {user.last_name}" if user else channel.title
 			ptitle=f"Переслано от {name}:"
+		else:
+			user = reply.sender
+			channel = None
+			name = f"{user.first_name} {user.last_name}" 
+			ptitle=f"Переслано от {name}:"
 		post = ptitle + '\n' + reply.message if reply.message else ""
 		token = self.config["API_TOKEN"]
 		session = vk.Session(access_token=token)
