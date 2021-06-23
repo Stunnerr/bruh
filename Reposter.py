@@ -98,8 +98,7 @@ class RepostMod(loader.Module):
 			if msg.grouped_id == grouped:
 				ans = await self.parse_media(api, msg, message)
 				upload += ans[0]
-				for x in ans[1]:
-					files.append(x)
+				files.extend(ans[1])
 		upload += await self.parse_media(api, reply, message)
 		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
