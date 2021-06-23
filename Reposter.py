@@ -92,6 +92,7 @@ class RepostMod(loader.Module):
 			return
 		await message.edit("<code>Поиск и загрузка вложений...</code>")
 		upload = ""
+		files = []
 		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id + 10, min_id=reply.id - 11)
 		grouped = reply.grouped_id if reply.grouped_id else -1
 		for msg in msgs:
