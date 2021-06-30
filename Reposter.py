@@ -108,6 +108,7 @@ class RepostMod(loader.Module):
 		ans = await self.parse_media(api, msg, message)
 		upload += ans[0]
 		files.extend(ans[1])
+		print(ans)
 		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
 			if post: 
