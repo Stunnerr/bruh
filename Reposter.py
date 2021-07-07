@@ -101,14 +101,10 @@ class RepostMod(loader.Module):
 		msgs = await client.get_messages(entity=message.to_id, reverse=True, max_id=reply.id + 10, min_id=reply.id - 11)
 		grouped = reply.grouped_id if reply.grouped_id else -1
 		for msg in msgs:
-			if msg.grouped_id == grouped:
+			if msg.grouped_id == grouped or msg.id == reply.id:
 				ans = await self.parse_media(api, msg, message)
 				upload += ans[0]
 				files.extend(ans[1])
-		ans = await self.parse_media(api, msg, message)
-		upload += ans[0]
-		files.extend(ans[1])
-		print(ans)
 		await message.edit("<code>Отправка...</code>")
 		for peer in peers:
 			if post: 
