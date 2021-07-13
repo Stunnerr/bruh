@@ -80,7 +80,7 @@ class RepostMod(loader.Module):
 		if reply.fwd_from:
 			user = reply.forward.sender
 			channel = reply.forward.chat
-			name = f"{user.first_name} {user.last_name}" if user else channel.title if channel else fwd.from_name
+			name = f"{user.first_name} {user.last_name}" if user else channel.title if channel else reply.forward.from_name
 			ptitle=f"Переслано от {name}:"
 		else:
 			user = reply.sender
