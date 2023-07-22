@@ -76,24 +76,19 @@
                 e.preventDefault();
                 place();
             }
-            if (key == "Escape") {
-                e.preventDefault();
-                cancel();
-            }
         })
+    }
+    function openToolbar() {
+        if (!hasToolbar()) {
+            garlicPlaceButtonContainer.children[0].click();
+        }
     }
     function hasToolbar() {
         return garlicPaletteContainer.children[0].style.opacity == '1'
     }
     function place() {
-        if (hasToolbar()) {
-            garlicPaletteConfirmBtn.click();
-        }
-    }
-    function cancel() {
-        if (hasToolbar()) {
-            garlicPaletteCancelBtn.click();
-        }
+        openToolbar();
+        garlicPaletteConfirmBtn.click();
     }
     function chooseColor(num){
         garlicPaletteColors[num].children[0].click();
