@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         r/Place Hotkeys
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @downloadURL  https://github.com/Stunnerr/bruh/raw/master/placehotkeys.user.js
+// @updateURL    https://github.com/Stunnerr/bruh/raw/master/placehotkeys.user.js
+// @namespace    https://stunner.su/
+// @version      1.0
+// @description  немного хоткеев на цвета(1234567890qwertyuiop + Shift) и установку пикселя (enter/space)
+// @author       Stunner
 // @match        https://garlic-bread.reddit.com/embed*
 // @match	     https://hot-potato.reddit.com/embed*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=reddit.com
@@ -35,7 +37,7 @@
         'KeyO',
         'KeyP'
     ];
-    const placeKeys = ['Space', 'Enter'];
+    const placeKeys = ['Space', 'Enter', 'NumpadEnter'];
     var garlicEmbed, garlicEmbedRoot, garlicPlaceButtonContainer, garlicPaletteContainer, garlicPaletteColors, garlicPaletteCancelBtn, garlicPaletteConfirmBtn;
     console.log("Hotkeys loading on", document.location.href);
     function sleep(ms) {
@@ -63,7 +65,7 @@
     }
     async function initEvent() {
         document.addEventListener('keypress', (e) => {
-            console.log(e);
+            //console.log(e);
             let key = e.code,
                 col = colorKeys.indexOf(key),
                 plc = placeKeys.indexOf(key);
