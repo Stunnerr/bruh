@@ -88,9 +88,12 @@
     }
     function place() {
         openToolbar();
-        garlicPaletteConfirmBtn.click();
+        if (!garlicPaletteConfirmBtn.disabled) {
+            garlicPaletteConfirmBtn.click();
+        }
     }
     function chooseColor(num){
+        openToolbar();
         garlicPaletteColors[num].children[0].click();
     }
     start();
