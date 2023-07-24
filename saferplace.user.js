@@ -102,7 +102,15 @@
         garlicEmbed.addEventListener('select-color', (e) => {
             currentCol = e.detail.color;
             toggleButton();
-        })
+        });
+        garlicEmbed.addEventListener('cancel-pixel', (e) => {
+            currentCol = 0;
+            toggleButton();
+        });
+        garlicEmbed.addEventListener('confirm-pixel', (e) => {
+            currentCol = 0;
+            toggleButton();
+        });
     }
     start();
 })();
