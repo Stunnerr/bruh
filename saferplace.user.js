@@ -66,7 +66,7 @@
             garlicPaletteConfirmBtn.className = "confirm disable-default-select";
             garlicPaletteConfirmBtn.disabled = false;
         }
-        timeout = setTimeout(toggleButton, 100);
+        timeout = setTimeout(toggleButton, 50);
     }
     async function start() {
         while (document.readyState !== 'complete') {
