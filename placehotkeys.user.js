@@ -4,7 +4,7 @@
 // @updateURL    https://github.com/Stunnerr/bruh/raw/master/placehotkeys.user.js
 // @namespace    https://stunner.su/
 // @version      1.0
-// @description  немного хоткеев на цвета(1234567890qwertyuiop + Shift) и установку пикселя (enter/space)
+// @description  немного хоткеев на цвета(1234567890qwertyuiop + Shift), установку пикселя (enter/space) и движение камерой (стрелочки)
 // @author       Stunner
 // @match        https://garlic-bread.reddit.com/embed*
 // @match	     https://hot-potato.reddit.com/embed*
@@ -38,7 +38,14 @@
         'KeyP'
     ];
     const placeKeys = ['Space', 'Enter', 'NumpadEnter'];
-    var garlicEmbed, garlicEmbedRoot, garlicPlaceButtonContainer, garlicPaletteContainer, garlicPaletteColors, garlicPaletteCancelBtn, garlicPaletteConfirmBtn;
+    const arrowKeys = {
+       'ArrowUp': [0, -1],
+       'ArrowDown': [0, 1],
+       'ArrowLeft': [-1, 0],
+       'ArrowRight': [1, 0],
+    }
+    var garlicEmbed, garlicEmbedRoot, garlicCamera, garlicPlaceButtonContainer, garlicPaletteContainer, garlicPaletteColors, garlicPaletteCancelBtn, garlicPaletteConfirmBtn;
+    var currentX = 0, currentY = 0;
     console.log("Hotkeys loading on", document.location.href);
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -57,6 +64,7 @@
     async function initVars() {
         garlicEmbed = document.querySelector('garlic-bread-embed');
         garlicEmbedRoot = garlicEmbed.shadowRoot;
+        garlicCamera = garlicEmbed.camera;
         garlicPlaceButtonContainer = garlicEmbedRoot.querySelector('garlic-bread-status-pill').shadowRoot;
         garlicPaletteContainer = garlicEmbedRoot.querySelector('garlic-bread-color-picker').shadowRoot;
         garlicPaletteColors = garlicPaletteContainer.querySelector('.palette').children;
@@ -64,11 +72,17 @@
         garlicPaletteConfirmBtn = garlicPaletteContainer.querySelector('button.confirm');
     }
     async function initEvent() {
-        document.addEventListener('keypress', (e) => {
+        garlicEmbed.addEventListener('move-camera', (e) => {
+            let [x, y] = [e.detail.x, e.detail.y];
+            currentX = Math.round(x);
+            currentY = Math.round(y);
+        });
+        document.addEventListener('keydown', (e) => {
             //console.log(e);
             let key = e.code,
                 col = colorKeys.indexOf(key),
-                plc = placeKeys.indexOf(key);
+                plc = placeKeys.indexOf(key),
+                mov = arrowKeys[key];
             if (col != -1) {
                 chooseColor(e.shiftKey * 20 + col);
             }
@@ -76,7 +90,16 @@
                 e.preventDefault();
                 place();
             }
+            if (mov) {
+               e.preventDefault();
+               let x = currentX + mov[0] + mov[0] * e.shiftKey * 9;
+               let y = currentY + mov[1] + mov[1] * e.shiftKey * 9;
+               moveCamera(x, y);
+            }
         })
+    }
+    function moveCamera(toX, toY) {
+        garlicEmbed.dispatchEvent(new CustomEvent('click-canvas', {detail: {x: toX, y: toY}}));
     }
     function openToolbar() {
         if (!hasToolbar()) {
