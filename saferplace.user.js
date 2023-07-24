@@ -5,7 +5,7 @@
 // @namespace    https://stunner.su/
 // @version      1.0
 // @description  запрет установки пикселя одного и того же цвета
-// @author       Stunner / stunner.su / @stunnerer
+// @author       Stunner / stunner.su / @stunnerer (разбаньте в тарахтелке пж....)
 // @match        https://garlic-bread.reddit.com/embed*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=reddit.com
 // @grant        none
