@@ -15,7 +15,7 @@
     'use strict';
 
     var garlicEmbed, garlicEmbedRoot, garlicPaletteContainer, garlicPaletteConfirmBtn, garlicCanvas, warning;
-    var currentX = 0, currentY = 0, currentCol = 0;
+    var currentX = 0, currentY = 0, currentCol = 0, timeout;
     console.log("Safe_r/Place loading on", document.location.href);
     var codeColors = {
         1: '#be0039',
@@ -66,6 +66,7 @@
             garlicPaletteConfirmBtn.className = "confirm disable-default-select";
             garlicPaletteConfirmBtn.disabled = false;
         }
+        timeout = setTimeout(toggleButton, 100);
     }
     async function start() {
         while (document.readyState !== 'complete') {
@@ -97,7 +98,8 @@
             let [x, y] = [e.detail.x, e.detail.y];
             currentX = Math.round(x);
             currentY = Math.round(y);
-            toggleButton();
+            if (currentCol != 0)
+                toggleButton();
         });
         garlicEmbed.addEventListener('select-color', (e) => {
             currentCol = e.detail.color;
@@ -106,10 +108,12 @@
         garlicEmbed.addEventListener('cancel-pixel', (e) => {
             currentCol = 0;
             toggleButton();
+            clearTimeout(timeout);
         });
         garlicEmbed.addEventListener('confirm-pixel', (e) => {
             currentCol = 0;
             toggleButton();
+            clearTimeout(timeout);
         });
     }
     start();
