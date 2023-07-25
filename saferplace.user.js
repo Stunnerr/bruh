@@ -3,7 +3,7 @@
 // @downloadURL  https://github.com/Stunnerr/bruh/raw/master/saferplace.user.js
 // @updateURL    https://github.com/Stunnerr/bruh/raw/master/saferplace.user.js
 // @namespace    https://stunner.su/
-// @version      1.0
+// @version      1.2
 // @description  запрет установки пикселя одного и того же цвета
 // @author       Stunner / stunner.su / @stunnerer (разбаньте в тарахтелке пж....)
 // @match        https://garlic-bread.reddit.com/embed*
