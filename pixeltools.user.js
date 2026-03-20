@@ -27,7 +27,7 @@
         moveKeys: new Set()
     };
 
-    internal.settings = JSON.parse(GM_getValue("pixeltools.settings", '{"protected":true,"opacity":0.5,"templates":[]}'));
+    internal.settings = JSON.parse(GM_getValue("pixeltools.settings", '{"protected":true, "hotkeys": true, "opacity":0.5, "templates":[]}'));
     // --- DYNAMIC HOOK FINDING ---
     function syncAndMapHooks() {
         // Step 1: Find the main component instance
@@ -290,6 +290,10 @@
                     <label>Auto-Lock (Same Color):</label>
                     <input type="checkbox" id="pt_lock" ${internal.settings.protected ? 'checked' : '' }>
                 </div>
+                <div class="pt-input">
+                    <label>Hotkeys:</label>
+                    <input type="checkbox" id="pt_hotkeys" ${internal.settings.hotkeys ? 'checked' : '' }>
+                </div>
                 <section>Templates</section>
                 <div class="pt-input">
                     <label>Opacity:</label>
@@ -329,6 +333,7 @@
             });
             // Listen for changes
             gui.querySelector('#pt_lock').onchange = (e) => internal.settings.protected = e.target.checked;
+            gui.querySelector('#pt_hotkeys').onchange = (e) => internal.settings.hotkeys = e.target.checked;
             gui.querySelector('#pt_opac').oninput = (e) => {
                 internal.settings.opacity = parseFloat(e.target.value);
                 if (internal.template) internal.template.opacity = internal.settings.opacity;
@@ -418,7 +423,7 @@
 
     unsafeWindow.addEventListener('keydown', (e) => {
         if (internal.idx.board === -1 && !syncAndMapHooks()) return;
-
+        if (!internal.settings.hotkeys) return;
         if (document.activeElement.tagName === 'INPUT') return;
 
         const key = e.code;
@@ -428,15 +433,6 @@
         if (e.code === 'Space') {
             e.preventDefault();
             pb.place();
-        }
-
-        if (/^[0-9]$/.test(key)) {
-            pb.setColor(key === '0' ? 9 : parseInt(key) - 1);
-        }
-
-        if (key === 'c') {
-            const colorId = pb.getSelectedPixelColor();
-            if (colorId !== null) pb.setColor(colorId);
         }
     });
 
